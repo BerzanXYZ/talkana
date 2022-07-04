@@ -3,14 +3,25 @@ import { Program } from "@project-serum/anchor";
 import { Talkana } from "../target/types/talkana";
 
 describe("talkana", () => {
-  // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+  const provider = anchor.AnchorProvider.env()
+  anchor.setProvider(provider)
 
-  const program = anchor.workspace.Talkana as Program<Talkana>;
+  const program = anchor.workspace.Talkana as Program<Talkana>
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
-  });
-});
+  it("Send a new tweet!", async () => {
+    const msg = anchor.web3.Keypair.generate()
+    
+    const tx = await program.rpc.sendMessage("solana", "I love solana!", {
+      accounts: {
+        message: msg.publicKey,
+        author: provider.wallet.publicKey,
+        systemProgram: anchor.web3.SystemProgram.programId,
+      },
+      signers: [msg]
+    })
+    const msgAccount = await program.account.message.fetch(msg.publicKey)
+    console.log(msgAccount);
+    
+
+  })
+})
