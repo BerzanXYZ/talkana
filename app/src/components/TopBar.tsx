@@ -4,14 +4,14 @@ import tailt from 'tailt'
 export const TopBar = tailt.header`
     sticky top-0 z-30
     flex items-center justify-between
-    h-16 px-4
-    bg-[#dbfff8]
-    dark:bg-[#112320]
+    w-full h-16 px-4 md:px-12
+    bg-slate-900
     bg-opacity-70
+    backdrop-blur-xl
 `
 
 export const BrandLabel = () => (
     <Link href='/'>
-        <h1 className='font-bold text-2xl text-[#0b6655] dark:text-[#6bffc3] cursor-pointer select-none'>Talkana</h1>
+        <h1 className='font-bold text-2xl text-cyan-200 cursor-pointer select-none'>Talkana</h1>
     </Link>
 )

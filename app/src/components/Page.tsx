@@ -1,10 +1,8 @@
 import tailt from 'tailt'
 
 export const Page = tailt.div`
-    flex flex-col
+    flex flex-col items-center
     min-h-screen
-    text-neutral-900
-    dark:text-white
-    bg-white
-    dark:bg-[#152b27]
+    text-white    
+    bg-slate-900
 `
