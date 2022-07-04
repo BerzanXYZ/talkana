@@ -44,7 +44,7 @@ pub struct SendMessage<'info> {
 pub enum ErrorCode {
     #[msg("Topic characters count shouldn't exceed 16!")]
     TopicLimitExceeded,
-    #[msg("Content characters count shoudln't exceed 64!")]
+    #[msg("Content characters count shouldn't exceed 64!")]
     ContentLimitExceeded,
 }
 

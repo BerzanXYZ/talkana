@@ -58,7 +58,7 @@ describe("talkana", () => {
         signers: [msg]
       })
     } catch (e) {
-      assert.equal(e.error.errorMessage, "Content characters count shoudln't exceed 64!")
+      assert.equal(e.error.errorMessage, "Content characters count shouldn't exceed 64!")
       return
     }
     assert.fail("Not expected: Users can send messages whose content has more than 64 characters!")
