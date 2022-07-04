@@ -5,8 +5,9 @@ export const TopBar = tailt.header`
     sticky top-0 z-30
     flex items-center justify-between
     h-16 px-4
-    bg-white
-    dark:bg-[#152b27]
+    bg-[#dbfff8]
+    dark:bg-[#112320]
+    border-b border-b-neutral-200
     bg-opacity-70
 `
 export const BrandLabel = () => (
