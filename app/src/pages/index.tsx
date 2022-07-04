@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import { Main } from '../components/Main'
 import Head from 'next/head'
 import Image from 'next/image'
 import { BottomBar } from '../components/BottomBar'
@@ -17,8 +18,11 @@ const Home: NextPage = () => {
       <TopBar>
         <BrandLabel/>
       </TopBar>
+      <Main>
+        f
+      </Main>
       <BottomBar>
-        
+
       </BottomBar>
     </Page>
   )
