@@ -1,5 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
+import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { assert } from "chai";
 import { Talkana } from "../target/types/talkana";
 
@@ -76,5 +77,19 @@ describe("talkana", () => {
     const filteredMsgAccounts = await program.account.message.all([{memcmp: {offset: 8, bytes: authorPublicKey.toBase58()}}])
 
     assert.equal(filteredMsgAccounts.length, 2)
+  })
+
+  it("Can fetch topic filtered account!", async () => {
+    const topic = 'solana'
+    const filteredMsgAccount = await program.account.message.all([
+      {
+        memcmp: {
+          offset: 8 + 8 + 32 + 4,
+          bytes: bs58.encode( Buffer.from(topic) )
+        }
+      }
+    ])
+
+    assert.equal(filteredMsgAccount.length, 1)
   })
 })
