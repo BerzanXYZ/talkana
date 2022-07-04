@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import SolanaProvider from '../contexts/SolanaProvider'
+import { WalletProvider } from '../contexts/WalletProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SolanaProvider>
+    <WalletProvider>
       <Component {...pageProps} />
-    </SolanaProvider>
+    </WalletProvider>
   )
 }
 
