@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import { Page } from '../components/Page'
-import { TopBar } from '../components/TopBar'
+import { BrandLabel, TopBar } from '../components/TopBar'
 
 const Home: NextPage = () => {
   return (
@@ -14,7 +14,7 @@ const Home: NextPage = () => {
       </Head>
       
       <TopBar>
-        
+        <BrandLabel/>
       </TopBar>
     </Page>
   )
