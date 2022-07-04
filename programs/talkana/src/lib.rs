@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::system_program;
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
@@ -6,13 +7,48 @@ declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 pub mod talkana {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    pub fn send_message(ctx: Context<SendMessage>, topic: String, content: String) -> Result<()> {
+        let message = &mut ctx.accounts.message;
+        let author = &ctx.accounts.author;
+        let clock = Clock::get().unwrap();
+
+        if topic.chars().count() > 16 {
+            return Err(ErrorCode::TopicLimitExceeded.into())
+        }
+        if content.chars().count() > 64 {
+            return Err(ErrorCode::ContentLimitExceeded.into())
+        }
+
+        message.author = *author.key;
+        message.timestamp = clock.unix_timestamp;
+        message.topic = topic;
+        message.content = content;
+
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
+pub struct SendMessage<'info> {
+    // Message account
+    #[account(init, payer = author, space = Message::LEN)]
+    pub message: Account<'info, Message>,
+    // Signer account
+    #[account(mut)]
+    pub author: Signer<'info>,
+    // System program
+    #[account(address = system_program::ID)]
+    pub system_program: AccountInfo<'info>
+
+}
+
+#[error_code]
+pub enum ErrorCode {
+    #[msg("Topic characters count shouldn't exceed 16!")]
+    TopicLimitExceeded,
+    #[msg("Content characters count shoudln't exceed 64!")]
+    ContentLimitExceeded,
+}
 
 #[account]
 pub struct Message {
