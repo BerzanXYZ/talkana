@@ -64,5 +64,12 @@ describe("talkana", () => {
     assert.fail("Not expected: Users can send messages whose content has more than 64 characters!")
   })
 
+  it("Can fetch all messages!", async () => {
+    const allMsgAccounts = await program.account.message.all()
+    // Tried to create 3 message accounts, but only 2 ones were succeeded
+    // So we expect the program has 2 accounts in total
+    assert.equal(allMsgAccounts.length, 2)
+  })
+
 
 })
