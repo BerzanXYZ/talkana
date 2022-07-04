@@ -71,5 +71,10 @@ describe("talkana", () => {
     assert.equal(allMsgAccounts.length, 2)
   })
 
+  it("Can fetch filtered accounts!", async () => {
+    const authorPublicKey = provider.wallet.publicKey
+    const filteredMsgAccounts = await program.account.message.all([{memcmp: {offset: 8, bytes: authorPublicKey.toBase58()}}])
 
+    assert.equal(filteredMsgAccounts.length, 2)
+  })
 })
