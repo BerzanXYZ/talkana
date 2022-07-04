@@ -6,6 +6,7 @@ import { BottomBar } from '../components/BottomBar'
 import { Page } from '../components/Page'
 import { BrandLabel, TopBar } from '../components/TopBar'
 import Message from '../components/Message'
+import ButtonWallet from '../components/ButtonWallet'
 
 const Home: NextPage = () => {
   return (
@@ -18,22 +19,14 @@ const Home: NextPage = () => {
       
       <TopBar>
         <BrandLabel/>
+        <ButtonWallet/>
       </TopBar>
+
       <Main>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
         <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
       </Main>
       <BottomBar>
-
+        
       </BottomBar>
     </Page>
   )
