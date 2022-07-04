@@ -12,6 +12,6 @@ export const TopBar = tailt.header`
 `
 export const BrandLabel = () => (
     <Link href='/'>
-        <h1 className='font-bold text-2xl'>Talkana</h1>
+        <h1 className='font-bold text-2xl text-[#0b6655]'>Talkana</h1>
     </Link>
 )
