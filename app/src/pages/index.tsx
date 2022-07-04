@@ -7,6 +7,7 @@ import { Page } from '../components/Page'
 import { BrandLabel, TopBar } from '../components/TopBar'
 import Message from '../components/Message'
 import ButtonWallet from '../components/ButtonWallet'
+import CreateMessage from '../components/CreateMessage'
 
 const Home: NextPage = () => {
   return (
@@ -23,6 +24,9 @@ const Home: NextPage = () => {
       </TopBar>
 
       <Main>
+        <CreateMessage/>
+        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
+        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
         <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
       </Main>
       <BottomBar>

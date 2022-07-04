@@ -2,7 +2,7 @@ import Link from 'next/link'
 import tailt from 'tailt'
 
 export const TopBar = tailt.header`
-    sticky top-0 z-30
+    sticky top-0 z-30 
     flex items-center justify-between
     w-full h-16 px-4 md:px-12
     bg-slate-900
