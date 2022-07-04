@@ -1,5 +1,4 @@
 use anchor_lang::prelude::*;
-use anchor_lang::solana_program::system_program;
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
@@ -37,8 +36,7 @@ pub struct SendMessage<'info> {
     #[account(mut)]
     pub author: Signer<'info>,
     // System program
-    #[account(address = system_program::ID)]
-    pub system_program: AccountInfo<'info>
+    pub system_program: Program<'info, System>
 
 }
 
