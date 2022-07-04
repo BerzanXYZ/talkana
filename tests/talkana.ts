@@ -10,7 +10,7 @@ describe("talkana", () => {
 
   const program = anchor.workspace.Talkana as Program<Talkana>
 
-  it("Send a new message!", async () => {
+  it("Can send a new message!", async () => {
     const msg = anchor.web3.Keypair.generate()
     
     const tx = await program.rpc.sendMessage("solana", "I love solana!", {
@@ -30,7 +30,7 @@ describe("talkana", () => {
     assert.ok(msgAccount.timestamp)
   })
 
-  it("Send a message without topic!", async () => {
+  it("Can send a message without a topic!", async () => {
     const msg = anchor.web3.Keypair.generate()
 
     const tx = await program.rpc.sendMessage("", "Hey, everyone!", {
