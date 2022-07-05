@@ -24,15 +24,15 @@ const Message = tailt.div`
 const Content = tailt.textarea`
     h-32 w-full p-4
     rounded-xl shadow-lg
-    bg-slate-800
-    outline-none resize-none duration-200
+    bg-slate-800 placeholder:text-slate-400
+    font-medium outline-none resize-none duration-200
 `
 const Button = tailt.button`
     absolute bottom-4 right-4
     h-10 px-5
     rounded-full
     shadow-lg
-
+    hover:scale-95 active:scale-100
     bg-sky-600 hover:bg-sky-500 active:bg-sky-700
     disabled:bg-slate-600
     duration-200
