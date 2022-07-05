@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("6w18Ct9KbWY7qtVmkzZX8E8HLHhAT3qhHNCcjh5SuTT6");
 
 #[program]
 pub mod talkana {

@@ -1,13 +1,13 @@
 [features]
 seeds = false
-[programs.localnet]
-talkana = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+talkana = "6w18Ct9KbWY7qtVmkzZX8E8HLHhAT3qhHNCcjh5SuTT6"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/berzan/.config/solana/id.json"
 
 [scripts]
