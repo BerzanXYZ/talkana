@@ -18,15 +18,19 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     const { connection } = useConnection()
     const wallet = useWallet()
 
-    async function sendMessage(msg: MessageType) {
+    const getProgram = useCallback(() => {
         if(!wallet.publicKey) return
         const provider = new AnchorProvider(connection, wallet as unknown as Wallet, AnchorProvider.defaultOptions())
-        const program = new Program(TALKANA_IDL, TALKANA_PROGRAM_ID, provider)
-        if(!program) return
+        return new Program(TALKANA_IDL, TALKANA_PROGRAM_ID, provider)   
+    }, [wallet, connection])
+
+    async function sendMessage(msg: MessageType) {
+        const program = getProgram()
+        if(!program || !wallet.publicKey) return
 
         const msgAcc = Keypair.generate()
-        
-        const tx = await program.rpc.sendMessage('test', 'Hello solana!', {
+
+        const tx = await program.rpc.sendMessage(msg.topic, msg.content, {
             accounts: {
                 author: wallet.publicKey,
                 message: msgAcc.publicKey,
@@ -35,6 +39,24 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             signers: [msgAcc]
         })
     }
+
+    useEffect(() => {
+        const fetchAllMessages = async () => {
+            const program = getProgram()
+            if(!program) return
+            
+            const messages = (await program.account.message.all().catch()).map((msg) => {
+                return ({
+                    author: msg.account.author.toBase58(),
+                    topic: msg.account.topic,
+                    content: msg.account.content,
+                    timeStamp: msg.account.timestamp.toString()
+                } as unknown as MessageType)
+            })
+            setAllMessages(messages)
+        }
+        fetchAllMessages()
+    }, [getProgram])
 
     return (
         <TalkanaContext.Provider value={{ sendMessage, allMessages }}>

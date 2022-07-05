@@ -19,7 +19,7 @@ export const getAirdrop = async (publicKey: PublicKey, connection: Connection)  
 }
 
 export interface MessageType {
-    author: PublicKey,
+    author: string,
     content: string,
     topic: string,
     timestamp: string,

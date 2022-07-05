@@ -7,6 +7,7 @@ import { clusterApiUrl } from '@solana/web3.js'
 import { GlowWalletAdapter, PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
+import { TalkanaProvider } from '../contexts/TalkanaProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   // Can be set to 'devnet', 'testnet', or 'mainnet-beta'
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <Component {...pageProps} />
+          <TalkanaProvider>
+            <Component {...pageProps} />
+          </TalkanaProvider>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
