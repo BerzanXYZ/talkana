@@ -51,7 +51,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         if(!program) return
         
         // Fetch messages from the program
-        const messages: MessageType[] = (await program.account.message.all().catch()).map((msg) => {
+        const messages: MessageType[] = (await (program.account.message.all())).map((msg) => {
             return {
                 author: msg.account.author.toBase58(),
                 topic: msg.account.topic,

@@ -2,7 +2,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { useEffect, useRef } from 'react'
 import tailt from 'tailt'
 import { useTalkana } from '../contexts/TalkanaProvider'
-import { getAirdrop, MessageType } from '../utils/talkana'
+import { MessageType } from '../utils/talkana'
 
 export default function CreateMessage() {
     const { publicKey } = useWallet()
@@ -11,23 +11,18 @@ export default function CreateMessage() {
     const contentRef = useRef<HTMLTextAreaElement>(null)
 
     async function sendMessageOnClick() {
+        if(!contentRef.current?.value) return
         let content = contentRef.current?.value
-        if(!content) return
 
         const message: MessageType = {
             topic: 'test',
             content: content,
         }  as MessageType
+
+        contentRef.current.value = ''
         await sendMessage(message)
         await updateMessages()
     }
-    
-    // Airdrop 1 SOL to the user when page gets loaded
-    /*
-    useEffect(() => {
-        if(publicKey) getAirdrop(publicKey, connection)
-    }, [])
-    */
     
     return (
         <Message>
