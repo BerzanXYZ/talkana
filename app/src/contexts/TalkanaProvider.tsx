@@ -1,6 +1,6 @@
-import { AnchorProvider, Idl, Program, Wallet } from "@project-serum/anchor"
+import { AnchorProvider, Program, Wallet } from "@project-serum/anchor"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-import { ConfirmOptions, Keypair, SystemProgram } from "@solana/web3.js"
+import { Keypair, SystemProgram } from "@solana/web3.js"
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { MessageType, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
 
@@ -19,12 +19,15 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     const { connection } = useConnection()
     const wallet = useWallet()
 
+    // Returns program
     const getProgram = useCallback(() => {
         if(!wallet.publicKey) return
         const provider = new AnchorProvider(connection, wallet as unknown as Wallet, AnchorProvider.defaultOptions())
         return new Program(TALKANA_IDL, TALKANA_PROGRAM_ID, provider)   
     }, [wallet, connection])
 
+
+    // Sends message to the program
     async function sendMessage(msg: MessageType) {
         const program = getProgram()
         if(!program || !wallet.publicKey) return
@@ -40,10 +43,14 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             signers: [msgAcc]
         })
     }
+
+
+    // Updates allMessages data
     const updateMessages = async () => {
         const program = getProgram()
         if(!program) return
         
+        // Fetch messages from the program
         const messages: MessageType[] = (await program.account.message.all().catch()).map((msg) => {
             return {
                 author: msg.account.author.toBase58(),
@@ -52,7 +59,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
                 timestamp: new Date( parseInt(msg.account.timestamp.toString()) *1000 ),
             }
         })
-        
+        // Sort and set allMessages
         setAllMessages(
             messages.sort((a,b) => {
                 const x = a.timestamp
@@ -63,9 +70,12 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         }))
     }
 
+
+    // Updates allMessages when wallet or connection changes
     useEffect(() => { 
         updateMessages()
     }, [getProgram])
+
 
     return (
         <TalkanaContext.Provider value={{ sendMessage, allMessages, updateMessages }}>
