@@ -1,11 +1,11 @@
-import { AnchorProvider, Wallet } from "@project-serum/anchor"
+import { AnchorProvider, Idl, Program, Wallet } from "@project-serum/anchor"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-import { ConfirmOptions } from "@solana/web3.js"
+import { ConfirmOptions, Keypair, SystemProgram } from "@solana/web3.js"
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { MessageType } from "../utils/talkana"
+import { MessageType, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
 
 interface TalkanaContextState {
-    sendMessage(): Promise<void>
+    sendMessage(msg: MessageType): Promise<void>
     allMessages: MessageType[]
 }
 
@@ -18,7 +18,22 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     const { connection } = useConnection()
     const wallet = useWallet()
 
-    async function sendMessage() {
+    async function sendMessage(msg: MessageType) {
+        if(!wallet.publicKey) return
+        const provider = new AnchorProvider(connection, wallet as unknown as Wallet, AnchorProvider.defaultOptions())
+        const program = new Program(TALKANA_IDL, TALKANA_PROGRAM_ID, provider)
+        if(!program) return
+
+        const msgAcc = Keypair.generate()
+        
+        const tx = await program.rpc.sendMessage('test', 'Hello solana!', {
+            accounts: {
+                author: wallet.publicKey,
+                message: msgAcc.publicKey,
+                systemProgram: SystemProgram.programId,
+            },
+            signers: [msgAcc]
+        })
     }
 
     return (
