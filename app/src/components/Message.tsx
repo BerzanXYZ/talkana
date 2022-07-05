@@ -1,15 +1,13 @@
 import tailt from 'tailt'
+import { MessageType } from '../utils/talkana'
 
-interface MessageState {
-    author: string,
-    content: string
-}
-
-export default function Message(mS: MessageState) {
+export default function Message(mS: MessageType) {
     return (
         <MessageArticle>
             <MessageAuthor>{mS.author}</MessageAuthor>
             <MessageContent>{mS.content}</MessageContent>
+            <MessageDate>{mS.timestamp?.toLocaleString()}</MessageDate>
+            <MessageTopic>{mS.topic}</MessageTopic>
         </MessageArticle>
     )
 }
@@ -30,5 +28,8 @@ const MessageContent = tailt.p`
     font-medium
 `
 const MessageTopic = tailt.h4`
-    font semibold text-sm
+    font-semibold text-sm
+`
+const MessageDate = tailt.h4`
+    font-semibold text-sm
 `

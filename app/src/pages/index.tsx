@@ -8,8 +8,11 @@ import { BrandLabel, TopBar } from '../components/TopBar'
 import Message from '../components/Message'
 import CreateMessage from '../components/CreateMessage'
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
+import { useTalkana } from '../contexts/TalkanaProvider'
 
 const Home: NextPage = () => {
+  const { allMessages } = useTalkana()
+
   return (
     <Page>
       <Head>
@@ -25,9 +28,7 @@ const Home: NextPage = () => {
 
       <Main>
         <CreateMessage/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
-        <Message author='daksjfad54dadf354fvsv4s6d5vsf46v54fs' content='I love solana!'/>
+        {allMessages.map((m, i) => <Message key={i+100} author={m.author} content={m.content} timestamp={m.timestamp} topic={m.topic}/>)}
       </Main>
       <BottomBar>
         

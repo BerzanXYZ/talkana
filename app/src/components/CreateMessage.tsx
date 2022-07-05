@@ -7,7 +7,7 @@ import { getAirdrop, MessageType } from '../utils/talkana'
 export default function CreateMessage() {
     const { publicKey } = useWallet()
     const { connection } = useConnection()
-    const { sendMessage } = useTalkana()
+    const { sendMessage, updateMessages } = useTalkana()
     const contentRef = useRef<HTMLTextAreaElement>(null)
 
     async function sendMessageOnClick() {
@@ -19,6 +19,7 @@ export default function CreateMessage() {
             content: content,
         }  as MessageType
         await sendMessage(message)
+        await updateMessages()
     }
     
     // Airdrop 1 SOL to the user when page gets loaded

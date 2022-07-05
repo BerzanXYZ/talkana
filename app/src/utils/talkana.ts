@@ -22,5 +22,5 @@ export interface MessageType {
     author: string,
     content: string,
     topic: string,
-    timestamp: string,
+    timestamp: Date,
 }
