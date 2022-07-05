@@ -33,7 +33,7 @@ const Button = tailt.button`
     rounded-full
     shadow-lg
     hover:scale-95 active:scale-100
-    bg-sky-600 hover:bg-sky-500 active:bg-sky-700
+    bg-sky-700 hover:bg-sky-600 active:bg-sky-500
     disabled:bg-slate-600
     duration-200
 `
