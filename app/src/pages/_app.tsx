@@ -1,4 +1,5 @@
-import '../styles/globals.css'
+require('@solana/wallet-adapter-react-ui/styles.css')
+require('../styles/globals.css')
 import type { AppProps } from 'next/app'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { useMemo } from 'react'
