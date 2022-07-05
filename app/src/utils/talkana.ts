@@ -1,12 +1,8 @@
-import { useConnection, useWallet } from "@solana/wallet-adapter-react"
+import { Connection, PublicKey } from "@solana/web3.js"
 
-export const getAirdrop = async ()  => {
-    const { connection } = useConnection()
-    const { publicKey } = useWallet()
-    if(!publicKey) return
-
+export const getAirdrop = async (publicKey: PublicKey, connection: Connection)  => {
     const sig = await connection.requestAirdrop(publicKey, 1e9)
-    
+
     const latestBlock = await connection.getLatestBlockhash()
 
     await connection.confirmTransaction({
