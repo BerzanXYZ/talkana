@@ -1,10 +1,9 @@
 import tailt from 'tailt'
-import { useWallet } from '../contexts/WalletProvider'
 
 export default function ButtonWallet() {
-    const w = useWallet()
+    
     return (
-        <Button onClick={w.connect}>Connect</Button>
+        <Button>Connect</Button>
     )
 }
 
