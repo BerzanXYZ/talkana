@@ -6,8 +6,8 @@ import { BottomBar } from '../components/BottomBar'
 import { Page } from '../components/Page'
 import { BrandLabel, TopBar } from '../components/TopBar'
 import Message from '../components/Message'
-import ButtonWallet from '../components/ButtonWallet'
 import CreateMessage from '../components/CreateMessage'
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui'
 
 const Home: NextPage = () => {
   return (
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
       
       <TopBar>
         <BrandLabel/>
-        <ButtonWallet/>
+        <WalletMultiButton/>
       </TopBar>
 
       <Main>
