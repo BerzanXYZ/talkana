@@ -17,13 +17,13 @@ export default function Message(mS: MessageState) {
 const MessageArticle = tailt.article`
     flex flex-col
     rounded-xl
-    p-4 gap-y-6
+    p-4 gap-y-5
     shadow-lg
     bg-slate-800
 `
 const MessageAuthor = tailt.h3`
-    font-semibold text-sm
-    opacity-80
+    font-medium text-sm
+    opacity-50
     cursor-pointer
 `
 const MessageContent = tailt.p`
