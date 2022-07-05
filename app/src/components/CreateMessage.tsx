@@ -1,7 +1,9 @@
+import { useWallet } from '@solana/wallet-adapter-react'
 import { useRef } from 'react'
 import tailt from 'tailt'
 
 export default function CreateMessage() {
+    const { publicKey } = useWallet()
     const contentRef = useRef<HTMLTextAreaElement>(null)
 
     function sendMessageOnClick() {
@@ -12,8 +14,8 @@ export default function CreateMessage() {
     
     return (
         <Message>
-            <Content ref={contentRef} placeholder='Write your message here...' maxLength={64}/>
-            <Button onClick={sendMessageOnClick}>Send</Button>
+            <Content disabled={!publicKey} ref={contentRef} placeholder='Write your message here...' maxLength={64}/>
+            <Button disabled={!publicKey} onClick={sendMessageOnClick}>Send</Button>
         </Message>
     )
 }
@@ -25,7 +27,7 @@ const Content = tailt.textarea`
     h-32 w-full p-4
     rounded-xl shadow-lg
     bg-slate-800 placeholder:text-slate-400
-    font-medium outline-none resize-none duration-200
+    font-medium outline-none resize-none duration-200 disabled:cursor-not-allowed
 `
 const Button = tailt.button`
     absolute bottom-4 right-4
@@ -35,5 +37,5 @@ const Button = tailt.button`
     hover:scale-95 active:scale-100
     bg-sky-700 hover:bg-sky-600 active:bg-sky-500
     disabled:bg-slate-600
-    duration-200
+    duration-200 disabled:cursor-not-allowed
 `
