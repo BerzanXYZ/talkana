@@ -25,6 +25,7 @@
 .wallet-adapter-button:not([disabled]):hover {
     @apply
     bg-sky-600
+    active:bg-sky-500
     ;
 }
 
@@ -116,7 +117,8 @@
 
 .wallet-adapter-dropdown-list-item:not([disabled]):hover {
     @apply
-    bg-sky-600;
+    bg-sky-600
+    active:bg-sky-500;
 }
 
 .wallet-adapter-modal-collapse-button svg {
