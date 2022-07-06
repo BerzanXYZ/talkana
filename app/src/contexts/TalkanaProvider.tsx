@@ -1,13 +1,14 @@
 import { AnchorProvider, Program, Wallet } from "@project-serum/anchor"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import { clusterApiUrl, Connection, Keypair, SystemProgram } from "@solana/web3.js"
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
+import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState } from "react"
 import { MessageType, sortMessages, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
 
 interface TalkanaContextState {
     sendMessage(msg: MessageType): Promise<void>
     allMessages: MessageType[]
     updateMessages(): Promise<void>
+    setSpecifiedAddress: Dispatch<SetStateAction<string>>
 }
 
 const TalkanaContext = createContext<TalkanaContextState>({} as TalkanaContextState)
@@ -16,6 +17,7 @@ export const useTalkana = () => useContext(TalkanaContext)
 
 export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     const [allMessages, setAllMessages] = useState<MessageType[]>([])
+    const [specifiedAddress, setSpecifiedAddress] = useState<string>('')
     const { connection } = useConnection()
     const wallet = useWallet()
 
@@ -43,13 +45,13 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             signers: [msgAcc]
         })
     }
-
+    
 
     // Updates allMessages data
     const updateMessages = async () => {
         const program = getProgram()
         if(!program) return
-        
+
         // Fetch messages from the program
         const messages: MessageType[] = (await (program.account.message.all())).map((msg) => {
             return {
@@ -107,10 +109,32 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         })()
     }, [wallet.publicKey])
 
+    // If user specifies an address update messages
+    useEffect(() => {
+        (async() => {
+            const program = getProgram()
+            if(!program) return
+
+            // Fetch messages filtered by a topic
+            const messages: MessageType[] = (await (program.account.message.all([{
+               memcmp: {offset: 8, bytes: specifiedAddress}
+            }]))).map(msg => {
+                return {
+                    author: msg.account.author.toBase58(),
+                    topic: msg.account.topic,
+                    content: msg.account.content,
+                    timestamp: new Date( parseInt(msg.account.timestamp.toString()) *1000 ),
+                }
+            })
+            // Sort and set allMessages
+            setAllMessages( messages.sort(sortMessages) )
+        })()
+    }, [specifiedAddress])
+
 
 
     return (
-        <TalkanaContext.Provider value={{ sendMessage, allMessages, updateMessages }}>
+        <TalkanaContext.Provider value={{ sendMessage, allMessages, updateMessages, setSpecifiedAddress }}>
             {children}
         </TalkanaContext.Provider>
     )

@@ -1,10 +1,13 @@
 import tailt from 'tailt'
+import { useTalkana } from '../contexts/TalkanaProvider'
 import { MessageType } from '../utils/talkana'
 
 export default function Message(msg: MessageType) {
+    const { setSpecifiedAddress } = useTalkana()
+
     return (
         <MessageArticle>
-            <MessageAuthor>{msg.author}</MessageAuthor>
+            <MessageAuthor onClick={() => setSpecifiedAddress(msg.author)}>{msg.author}</MessageAuthor>
             <MessageContent>{msg.content}</MessageContent>
             <DivMetaData>
                 <MessageTopic>{msg.topic} •</MessageTopic>
