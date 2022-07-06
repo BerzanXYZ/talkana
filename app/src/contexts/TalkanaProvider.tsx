@@ -1,8 +1,8 @@
 import { AnchorProvider, Program, Wallet } from "@project-serum/anchor"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
-import { Keypair, SystemProgram } from "@solana/web3.js"
+import { clusterApiUrl, Connection, Keypair, SystemProgram } from "@solana/web3.js"
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { MessageType, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
+import { MessageType, sortMessages, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
 
 interface TalkanaContextState {
     sendMessage(msg: MessageType): Promise<void>
@@ -60,21 +60,35 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             }
         })
         // Sort and set allMessages
-        setAllMessages(
-            messages.sort((a,b) => {
-                const x = a.timestamp
-                const y = b.timestamp
-                if(x>y) return -1
-                if(x<y) return 1
-                return 0
-        }))
+        setAllMessages( messages.sort(sortMessages) )
+    }
+    
+    // Updates all messages without using user's wallet and connection
+    const updateMessagesIfNotConnected = async () => {
+        const provider = new AnchorProvider(new Connection(clusterApiUrl('devnet'),'confirmed'), {} as Wallet, AnchorProvider.defaultOptions())
+        const program = new Program(TALKANA_IDL, TALKANA_PROGRAM_ID, provider)
+        const messages: MessageType[] = (await program.account.message.all()).map(msg => {
+            return {
+                author: msg.account.author.toBase58(),
+                topic: msg.account.topic,
+                content: msg.account.content,
+                timestamp: new Date( parseInt(msg.account.timestamp.toString()) * 1000 ),
+            }
+        })
+        // Sort and set allMessages
+        setAllMessages( messages.sort(sortMessages) )
     }
 
-/*
-    // Updates allMessages when wallet or connection changes
+
+    // Updates allMessages when page gets loaded
     useEffect(() => { 
-        updateMessages()
-    }, [connection]) */
+        if(wallet.publicKey && connection) {
+            updateMessages()
+         } else {
+            updateMessagesIfNotConnected()
+        }
+    }, [])
+
 
 
     return (
