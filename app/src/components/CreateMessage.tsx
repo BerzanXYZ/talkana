@@ -1,5 +1,5 @@
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
-import { useEffect, useRef } from 'react'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { useRef } from 'react'
 import tailt from 'tailt'
 import { useTalkana } from '../contexts/TalkanaProvider'
 import { MessageType } from '../utils/talkana'

@@ -1,7 +1,7 @@
 import { AnchorProvider, Program, Wallet } from "@project-serum/anchor"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import { clusterApiUrl, Connection, Keypair, SystemProgram } from "@solana/web3.js"
-import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from "react"
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react"
 import { MessageType, sortMessages, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
 
 interface TalkanaContextState {

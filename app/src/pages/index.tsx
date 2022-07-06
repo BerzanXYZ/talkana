@@ -1,7 +1,6 @@
 import type { NextPage } from 'next'
 import { Main } from '../components/Main'
 import Head from 'next/head'
-import Image from 'next/image'
 import { BottomBar } from '../components/BottomBar'
 import { Page } from '../components/Page'
 import { BrandLabel, TopBar } from '../components/TopBar'

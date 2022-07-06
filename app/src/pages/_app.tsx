@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app'
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base'
 import { useMemo } from 'react'
 import { clusterApiUrl } from '@solana/web3.js'
-import { GlowWalletAdapter, PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
+import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react'
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { TalkanaProvider } from '../contexts/TalkanaProvider'
@@ -20,7 +20,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   const wallets = useMemo(
     () => [
       new PhantomWalletAdapter(),
-      new GlowWalletAdapter(),
       new SolflareWalletAdapter({network}),
     ],
     [network]

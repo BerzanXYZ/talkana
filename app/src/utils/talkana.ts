@@ -1,4 +1,4 @@
-import { Connection, PublicKey } from "@solana/web3.js"
+import { PublicKey } from "@solana/web3.js"
 import { IDL } from "./talkanatype"
 
 // Constant values for Talkana program
