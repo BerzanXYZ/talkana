@@ -9,7 +9,7 @@ export default function Message(msg: MessageType) {
             <DivMetaData>
                 <MessageTopic>{msg.topic} •</MessageTopic>
                 <MessageDate>{msg.timestamp?.toLocaleString()}</MessageDate>
-                </DivMetaData>
+            </DivMetaData>
         </MessageArticle>
     )
 }
