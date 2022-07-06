@@ -13,4 +13,12 @@ export interface MessageType {
     timestamp: Date,
 }
 
+export function sortMessages(a: MessageType ,b: MessageType) {
+    const x = a.timestamp
+    const y = b.timestamp
+    if(x>y) return -1
+    if(x<y) return 1
+    return 0
+}
+
 
