@@ -28,6 +28,7 @@ const Home: NextPage = () => {
 
       <Main>
         <CreateMessage/>
+        <Message author='asdsaaddasd46sa5d465sad465asds' content='Hello world' timestamp={new Date(Date.now())} topic='test'/>
         {allMessages.map((m, i) => <Message key={i+100} author={m.author} content={m.content} timestamp={m.timestamp} topic={m.topic}/>)}
       </Main>
       <BottomBar>

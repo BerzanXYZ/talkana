@@ -1,13 +1,15 @@
 import tailt from 'tailt'
 import { MessageType } from '../utils/talkana'
 
-export default function Message(mS: MessageType) {
+export default function Message(msg: MessageType) {
     return (
         <MessageArticle>
-            <MessageAuthor>{mS.author}</MessageAuthor>
-            <MessageContent>{mS.content}</MessageContent>
-            <MessageDate>{mS.timestamp?.toLocaleString()}</MessageDate>
-            <MessageTopic>{mS.topic}</MessageTopic>
+            <MessageAuthor>{msg.author}</MessageAuthor>
+            <MessageContent>{msg.content}</MessageContent>
+            <DivMetaData>
+                <MessageTopic>{msg.topic} •</MessageTopic>
+                <MessageDate>{msg.timestamp?.toLocaleString()}</MessageDate>
+                </DivMetaData>
         </MessageArticle>
     )
 }
@@ -29,7 +31,13 @@ const MessageContent = tailt.p`
 `
 const MessageTopic = tailt.h4`
     font-semibold text-sm
+    px-2 py-1 rounded-md
+    bg-slate-700 cursor-pointer select-none
 `
 const MessageDate = tailt.h4`
     font-semibold text-sm
+    opacity-50 select-none
+`
+const DivMetaData = tailt.div`
+    flex justify-between
 `

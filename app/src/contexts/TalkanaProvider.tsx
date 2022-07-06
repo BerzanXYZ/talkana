@@ -70,11 +70,11 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         }))
     }
 
-
+/*
     // Updates allMessages when wallet or connection changes
     useEffect(() => { 
         updateMessages()
-    }, [getProgram])
+    }, [connection]) */
 
 
     return (
