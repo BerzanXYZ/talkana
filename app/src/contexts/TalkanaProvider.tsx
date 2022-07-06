@@ -89,6 +89,24 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [])
 
+    // Request 1 SOL airdrop for once when wallet gets connected
+    useEffect(() => {
+        (async() => {
+            if(!wallet.publicKey) return
+            // If it didn't request airdrop before, do so
+            if(!localStorage.getItem('airdrop')) {
+                const latestBlock = await connection.getLatestBlockhash()
+                await connection.confirmTransaction({
+                blockhash: latestBlock.blockhash,
+                lastValidBlockHeight:latestBlock.lastValidBlockHeight,
+                signature: await connection.requestAirdrop(wallet.publicKey, 1e9)
+                })
+                localStorage.setItem('airdrop', 'yes')
+                alert('🎁 Berzan gave you 1 SOL to send a message ;)')
+            }
+        })()
+    }, [wallet.publicKey])
+
 
 
     return (
