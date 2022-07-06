@@ -47,7 +47,7 @@ const Content = tailt.textarea`
 const Topic = tailt.input`
     absolute bottom-4 left-4
     px-2 py-1 rounded-md shadow-lg
-    bg-slate-700 hover:bg-slate-600 active:bg-slate-700 placeholder:text-slate-300 hover:placeholder:text-slate-200
+    bg-slate-700 hover:bg-slate-600 focus:bg-slate-700 placeholder:text-slate-300 hover:placeholder:text-slate-200
     font-medium text-sm duration-200 disabled:cursor-not-allowed outline-none
 `
 const Button = tailt.button`
