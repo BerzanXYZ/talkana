@@ -114,9 +114,10 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         (async() => {
             const program = getProgram()
-            if(!program) return
+            
+            if(!program || !specifiedAddress) return
 
-            if(specifiedAddress !== usedSpecifiedAddress) {
+            if(specifiedAddress !== usedSpecifiedAddress && specifiedAddress) {
                 // Fetch messages filtered by a topic
                 const messages: MessageType[] = (await (program.account.message.all([{
                     memcmp: {offset: 8, bytes: specifiedAddress}
@@ -133,11 +134,14 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
                 setAllMessages( messages.sort(sortMessages) )
                 // Set used address as specified address
                 setUsedSpecifiedAddress(specifiedAddress)
-                alert(`Your'e viewing the messages from: ${specifiedAddress}`)
+                setSpecifiedAddress('')
             } else {
+                setUsedSpecifiedAddress('')
                 // If user has already specified the same address, disable filtering, show all messages
                 updateMessages()
             }
+            console.log(specifiedAddress, usedSpecifiedAddress);
+            
         })()
     }, [specifiedAddress])
 
