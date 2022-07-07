@@ -26,8 +26,9 @@ const MessageArticle = tailt.article`
 `
 const MessageAuthor = tailt.h3`
     font-medium text-xs sm:text-sm
-    opacity-50
-    cursor-pointer
+    opacity-50 hover:opacity-80 active:opacity-100
+    hover:text-cyan-200 active:text-white
+    cursor-pointer select-none duration-200
 `
 const MessageContent = tailt.p`
     font-medium
@@ -35,7 +36,8 @@ const MessageContent = tailt.p`
 const MessageTopic = tailt.h4`
     font-semibold text-sm
     px-2 py-1 rounded-md
-    bg-slate-700 cursor-pointer select-none
+    bg-slate-700 hover:bg-slate-600 active:bg-slate-400
+    cursor-pointer select-none duration-200
 `
 const MessageDate = tailt.h4`
     font-semibold text-sm
