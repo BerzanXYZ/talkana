@@ -109,7 +109,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         })()
     }, [wallet.publicKey])
 
-    // If user specifies an address update messages
+    // If user specifies an address, update allMessages as the messages of this address
     useEffect(() => {
         (async() => {
             const program = getProgram()
@@ -128,6 +128,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             })
             // Sort and set allMessages
             setAllMessages( messages.sort(sortMessages) )
+            alert(`Your'e viewing the messages from: ${specifiedAddress}`)
         })()
     }, [specifiedAddress])
 
