@@ -18,6 +18,7 @@ export const useTalkana = () => useContext(TalkanaContext)
 export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     const [allMessages, setAllMessages] = useState<MessageType[]>([])
     const [specifiedAddress, setSpecifiedAddress] = useState<string>('')
+    const [usedSpecifiedAddress, setUsedSpecifiedAddress] = useState<string>('')
     const { connection } = useConnection()
     const wallet = useWallet()
 
@@ -115,20 +116,28 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             const program = getProgram()
             if(!program) return
 
-            // Fetch messages filtered by a topic
-            const messages: MessageType[] = (await (program.account.message.all([{
-               memcmp: {offset: 8, bytes: specifiedAddress}
-            }]))).map(msg => {
-                return {
-                    author: msg.account.author.toBase58(),
-                    topic: msg.account.topic,
-                    content: msg.account.content,
-                    timestamp: new Date( parseInt(msg.account.timestamp.toString()) *1000 ),
-                }
-            })
-            // Sort and set allMessages
-            setAllMessages( messages.sort(sortMessages) )
-            alert(`Your'e viewing the messages from: ${specifiedAddress}`)
+            if(specifiedAddress !== usedSpecifiedAddress) {
+                // Fetch messages filtered by a topic
+                const messages: MessageType[] = (await (program.account.message.all([{
+                    memcmp: {offset: 8, bytes: specifiedAddress}
+                }]))).map(msg => {
+                    return {
+                        author: msg.account.author.toBase58(),
+                        topic: msg.account.topic,
+                        content: msg.account.content,
+                        timestamp: new Date( parseInt(msg.account.timestamp.toString()) *1000 ),
+                     }
+                })
+
+                // Sort and set allMessages
+                setAllMessages( messages.sort(sortMessages) )
+                // Set used address as specified address
+                setUsedSpecifiedAddress(specifiedAddress)
+                alert(`Your'e viewing the messages from: ${specifiedAddress}`)
+            } else {
+                // If user has already specified the same address, disable filtering, show all messages
+                updateMessages()
+            }
         })()
     }, [specifiedAddress])
 
