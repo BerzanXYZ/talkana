@@ -3,14 +3,14 @@ import { useTalkana } from '../contexts/TalkanaProvider'
 import { MessageType } from '../utils/talkana'
 
 export default function Message(msg: MessageType) {
-    const { setSpecifiedAddress } = useTalkana()
+    const { setSpecifiedAddress, setSpecifiedTopic } = useTalkana()
 
     return (
         <MessageArticle>
             <MessageAuthor onClick={() => setSpecifiedAddress(msg.author)}>{msg.author}</MessageAuthor>
             <MessageContent>{msg.content}</MessageContent>
             <DivMetaData>
-                <MessageTopic>{msg.topic} •</MessageTopic>
+                <MessageTopic onClick={() => setSpecifiedTopic(msg.topic)}>{msg.topic} •</MessageTopic>
                 <MessageDate>{msg.timestamp?.toLocaleString()}</MessageDate>
             </DivMetaData>
         </MessageArticle>

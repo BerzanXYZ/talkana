@@ -1,4 +1,5 @@
 import { AnchorProvider, Program, Wallet } from "@project-serum/anchor"
+import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import { clusterApiUrl, Connection, Keypair, SystemProgram } from "@solana/web3.js"
 import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState } from "react"
@@ -9,6 +10,7 @@ interface TalkanaContextState {
     allMessages: MessageType[]
     updateMessages(): Promise<void>
     setSpecifiedAddress: Dispatch<SetStateAction<string>>
+    setSpecifiedTopic: Dispatch<SetStateAction<string>>
 }
 
 const TalkanaContext = createContext<TalkanaContextState>({} as TalkanaContextState)
@@ -19,6 +21,9 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
     const [allMessages, setAllMessages] = useState<MessageType[]>([])
     const [specifiedAddress, setSpecifiedAddress] = useState<string>('')
     const [usedSpecifiedAddress, setUsedSpecifiedAddress] = useState<string>('')
+    const [specifiedTopic, setSpecifiedTopic] = useState<string>('')
+    const [usedSpecifiedTopic, setUsedSpecifiedTopic] = useState<string>('')
+
     const { connection } = useConnection()
     const wallet = useWallet()
 
@@ -110,17 +115,17 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
         })()
     }, [wallet.publicKey])
 
-    // If user specifies an address, update allMessages as the messages of this address
+    // If user specifies an address, update allMessages as the messages from this address
     useEffect(() => {
         (async() => {
             const program = getProgram()
             
             if(!program || !specifiedAddress) return
 
-            if(specifiedAddress !== usedSpecifiedAddress && specifiedAddress) {
-                // Fetch messages filtered by a topic
+            if(specifiedAddress !== usedSpecifiedAddress) {
+                // Fetch messages filtered by an address
                 const messages: MessageType[] = (await (program.account.message.all([{
-                    memcmp: {offset: 8, bytes: specifiedAddress}
+                    memcmp: {offset: 8, bytes: specifiedAddress},
                 }]))).map(msg => {
                     return {
                         author: msg.account.author.toBase58(),
@@ -129,26 +134,63 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
                         timestamp: new Date( parseInt(msg.account.timestamp.toString()) *1000 ),
                      }
                 })
-
                 // Sort and set allMessages
                 setAllMessages( messages.sort(sortMessages) )
                 // Set used address as specified address
                 setUsedSpecifiedAddress(specifiedAddress)
+                // Set specifed address as empty to be able to run this effect
+                // when the user specifies the same address again
                 setSpecifiedAddress('')
             } else {
                 setUsedSpecifiedAddress('')
                 // If user has already specified the same address, disable filtering, show all messages
                 updateMessages()
+                // Set specifed address as empty to be able to run this effect
+                // when the user specifies the same address again
+                setSpecifiedAddress('')
             }
-            console.log(specifiedAddress, usedSpecifiedAddress);
-            
         })()
     }, [specifiedAddress])
 
 
+    // If user specifies a topic, update allMessages as the messages on this topic
+    useEffect(() => {
+        (async () => {
+            const program = getProgram()
+            
+            if(!program || !specifiedTopic) return
+
+            if(specifiedTopic !== usedSpecifiedTopic) {
+                // Fetch messages speficed by a topic
+                const messages: MessageType[] = (await program.account.message.all([{
+                    memcmp: { offset: 52, bytes: bs58.encode(Buffer.from(specifiedTopic)) },
+                }])).map(msg => {
+                    return {
+                        author: msg.account.author.toBase58(),
+                        topic: msg.account.topic,
+                        content: msg.account.content,
+                        timestamp: new Date( parseInt(msg.account.timestamp.toString()) *1000 ),
+                    }
+                })
+                // Sort and set allMessages
+                setAllMessages( messages.sort(sortMessages) )
+                // Set used topic as specified topic
+                setUsedSpecifiedTopic(specifiedTopic)
+                // Set specifed topic as empty to be able to run this effect
+                // when the user specifies the same topic again
+                setSpecifiedTopic('')
+            } else {
+                setUsedSpecifiedTopic('')
+                updateMessages()
+                // Set specifed topic as empty to be able to run this effect
+                // when the user specifies the same topic again
+                setSpecifiedTopic('')
+            }
+        })()
+    }, [specifiedTopic])
 
     return (
-        <TalkanaContext.Provider value={{ sendMessage, allMessages, updateMessages, setSpecifiedAddress }}>
+        <TalkanaContext.Provider value={{ sendMessage, allMessages, updateMessages, setSpecifiedAddress, setSpecifiedTopic }}>
             {children}
         </TalkanaContext.Provider>
     )
