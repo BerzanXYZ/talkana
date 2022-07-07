@@ -25,7 +25,7 @@ const MessageArticle = tailt.article`
     bg-slate-800
 `
 const MessageAuthor = tailt.h3`
-    font-medium text-sm
+    font-medium text-xs sm:text-sm
     opacity-50
     cursor-pointer
 `
