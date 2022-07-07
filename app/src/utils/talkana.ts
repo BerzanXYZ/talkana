@@ -21,4 +21,11 @@ export function sortMessages(a: MessageType ,b: MessageType) {
     return 0
 }
 
+export function filterMessages(msg: MessageType): boolean {
+    const pattern = ["dick", "fuck", "pussy", "cock"]
+    for(let i = 0; i < pattern.length; i++ ) {
+        if(msg.content.includes(pattern[i]) || msg.topic.includes(pattern[i])) return false
+    }
+    return true
+}
 

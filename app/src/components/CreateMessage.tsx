@@ -2,7 +2,7 @@ import { useWallet } from '@solana/wallet-adapter-react'
 import { useRef } from 'react'
 import tailt from 'tailt'
 import { useTalkana } from '../contexts/TalkanaProvider'
-import { MessageType } from '../utils/talkana'
+import { filterMessages, MessageType } from '../utils/talkana'
 
 export default function CreateMessage() {
     const { publicKey } = useWallet()
@@ -21,7 +21,10 @@ export default function CreateMessage() {
 
         contentRef.current.value = ''
         if(topicRef.current) topicRef.current.value = ''
-        
+        if(!filterMessages(message)) {
+            alert('Use nice words :)')
+            return
+        }
         await sendMessage(message)
         await updateMessages()
     }

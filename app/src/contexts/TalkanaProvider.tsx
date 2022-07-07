@@ -3,7 +3,7 @@ import { bs58 } from "@project-serum/anchor/dist/cjs/utils/bytes"
 import { useConnection, useWallet } from "@solana/wallet-adapter-react"
 import { clusterApiUrl, Connection, Keypair, SystemProgram } from "@solana/web3.js"
 import { createContext, Dispatch, ReactNode, SetStateAction, useCallback, useContext, useEffect, useState } from "react"
-import { MessageType, sortMessages, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
+import { filterMessages, MessageType, sortMessages, TALKANA_IDL, TALKANA_PROGRAM_ID } from "../utils/talkana"
 
 interface TalkanaContextState {
     sendMessage(msg: MessageType): Promise<void>
@@ -68,7 +68,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             }
         })
         // Sort and set allMessages
-        setAllMessages( messages.sort(sortMessages) )
+        setAllMessages( messages.filter(filterMessages).sort(sortMessages) )
     }
     
     // Updates all messages without using user's wallet and connection
@@ -84,7 +84,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
             }
         })
         // Sort and set allMessages
-        setAllMessages( messages.sort(sortMessages) )
+        setAllMessages( messages.filter(filterMessages).sort(sortMessages) )
     }
 
 
@@ -135,7 +135,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
                      }
                 })
                 // Sort and set allMessages
-                setAllMessages( messages.sort(sortMessages) )
+                setAllMessages( messages.filter(filterMessages).sort(sortMessages) )
                 // Set used address as specified address
                 setUsedSpecifiedAddress(specifiedAddress)
                 // Set specifed address as empty to be able to run this effect
@@ -173,7 +173,7 @@ export const TalkanaProvider = ({ children }: { children: ReactNode }) => {
                     }
                 })
                 // Sort and set allMessages
-                setAllMessages( messages.sort(sortMessages) )
+                setAllMessages( messages.filter(filterMessages).sort(sortMessages) )
                 // Set used topic as specified topic
                 setUsedSpecifiedTopic(specifiedTopic)
                 // Set specifed topic as empty to be able to run this effect
